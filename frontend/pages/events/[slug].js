@@ -1,10 +1,10 @@
-import React from 'react';
+import Layout from '../../components/Layout';
 
 const EventPage = () => {
   return (
-    <div>
+    <Layout title='my event'>
       <h1>My Event</h1>
-    </div>
+    </Layout>
   );
 };
 
