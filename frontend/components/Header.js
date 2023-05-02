@@ -6,7 +6,13 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <Link href='/'>DJEventify</Link>
+        <Link href='/'>
+          <img
+            style={{ cursor: 'pointer' }}
+            src='../../images/eventify_logo.png'
+            alt='logo'
+          />
+        </Link>
       </div>
 
       <nav>
