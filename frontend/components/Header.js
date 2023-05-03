@@ -9,7 +9,7 @@ const Header = () => {
         <Link href='/'>
           <img
             style={{ cursor: 'pointer' }}
-            src='../../images/eventify_logo.png'
+            src='../../images/eventify_logo_lg.png'
             alt='logo'
           />
         </Link>
