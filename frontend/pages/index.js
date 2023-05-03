@@ -1,9 +1,18 @@
 import Layout from '../components/Layout';
+import { API_URL } from '../config';
 
-export default function HomePage() {
+export default function HomePage({ events }) {
+  console.log(events);
   return (
     <Layout>
-      <h1>DJ Events</h1>
+      <h1>Upcoming Events</h1>
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch(`${API_URL}/api/events`);
+  const events = await res.json();
+
+  return { props: { events } };
 }
