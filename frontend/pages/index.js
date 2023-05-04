@@ -2,6 +2,7 @@ import EventItem from '../components/EventItem';
 import Layout from '../components/Layout';
 import { API_URL } from '../config';
 import Link from 'next/link';
+import axios from 'axios';
 
 export default function HomePage({ events }) {
   return (
@@ -10,7 +11,7 @@ export default function HomePage({ events }) {
       {events.length === 0 && <h3>No events available at the moment</h3>}
 
       {events.map((evt) => (
-        <EventItem key={evt.id} evt={evt} />
+        <EventItem key={evt.id} evt={evt.attributes || evt} />
       ))}
 
       {events.length > 0 && (
@@ -23,8 +24,8 @@ export default function HomePage({ events }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
+  const res = await fetch(`${API_URL}/api/events?_sort=date:ASC&_limit=3`);
   const events = await res.json();
 
-  return { props: { events: events.slice(0, 3) }, revalidate: 1 };
+  return { props: { events: events.data }, revalidate: 1 };
 }
