@@ -4,14 +4,15 @@ import Image from 'next/image';
 import styles from '../styles/EventItem.module.css';
 import moment from 'moment';
 
-const EventItem = ({ evt }) => {
+const EventItem = ({id, evt }) => {
+  const imageFormats = evt.image?.data?.attributes?.formats;
   return (
     <div className={styles.event}>
       <div className={styles.img}>
         <Image
           src={
-            evt.image
-              ? evt?.image?.formats?.thumbnail?.url
+            imageFormats
+              ? imageFormats.thumbnail?.url
               : '/images/event-default.png'
           }
           width={170}
@@ -26,7 +27,7 @@ const EventItem = ({ evt }) => {
       </div>
 
       <div className={styles.link}>
-        <Link href={`/events/${evt.slug}`} className='btn'>
+        <Link href={`/events/${id}`} className='btn'>
           Details
         </Link>
       </div>

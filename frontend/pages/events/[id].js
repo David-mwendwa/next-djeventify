@@ -8,8 +8,8 @@ import styles from '../../styles/Event.module.css';
 import moment from 'moment';
 
 const EventPage = ({ evt }) => {
-  let evtId = evt.id;
   evt = evt.attributes;
+  const imageFormats = evt.image?.data?.attributes?.formats;
 
   const handleDelete = (e) => {
     console.log('delete');
@@ -18,7 +18,7 @@ const EventPage = ({ evt }) => {
     <Layout title='event'>
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${evtId}`} className={styles.edit}>
+          <Link href={`/events/edit/${evt.id}`} className={styles.edit}>
             <FaPencilAlt /> Edit
           </Link>
           <a href='#' className={styles.delete} onClick={handleDelete}>
@@ -33,7 +33,7 @@ const EventPage = ({ evt }) => {
         {evt.image && (
           <div className={styles.image}>
             <Image
-              src={evt.image?.format?.thumbnail}
+              src={imageFormats?.thumbnail?.url}
               width={960}
               height={600}
             />
@@ -54,34 +54,38 @@ const EventPage = ({ evt }) => {
   );
 };
 
-export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/api/events`);
-  let events = await res.json();
-  events = events.data;
-  const paths = events.map((evt) => ({
-    params: { slug: evt.attributes.slug || evt.slug },
-  }));
+export async function getServerSideProps({ query: { id } }) {
+  const res = await fetch(`${API_URL}/api/events/${id}?populate=image`);
+  let event = await res.json();
+  console.log({ singleevt: event });
   return {
-    paths,
-    fallback: false,
+    props: { evt: event.data },
   };
 }
 
-export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(`${API_URL}/api/events?slug=${slug}`);
-  let events = await res.json();
-  events = events.data;
-  return {
-    props: { evt: events[0] },
-    revalidate: 1,
-  };
-}
-
-// export async function getServerSideProps({ query: { slug } }) {
-//   const res = await fetch(`${API_URL}/api/events/${slug}`);
-//   const events = await res.json();
+// export async function getStaticPaths() {
+//   const res = await fetch(`${API_URL}/api/events`);
+//   let events = await res.json();
+//   events = events.data;
+//   console.log('eventsss', events);
+//   const paths = events.map((evt) => ({
+//     params: { id: evt.id },
+//   }));
 //   return {
-//     props: { evt: events[0] },
+//     paths,
+//     fallback: false,
+//   };
+// }
+
+// // TODO: fix this to get id
+// export async function getStaticProps(params) {
+//   console.log(params);
+//   const res = await fetch(`${API_URL}/api/events/${params.id}`);
+//   let event = await res.json();
+//   event = event.data;
+//   return {
+//     props: { evt: event },
+//     revalidate: 1,
 //   };
 // }
 
