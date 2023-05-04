@@ -9,7 +9,7 @@ export default function EventsPage({ events }) {
       {events.length === 0 && <h3>No events available at the moment</h3>}
 
       {events.map((evt) => (
-        <EventItem key={evt.id} evt={evt} />
+        <EventItem key={evt.id} evt={evt.attributes || evt} />
       ))}
     </Layout>
   );
@@ -17,7 +17,8 @@ export default function EventsPage({ events }) {
 
 export async function getStaticProps() {
   const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
+  let events = await res.json();
+  events = events.data;
 
   return { props: { events }, revalidate: 1 };
 }
