@@ -7,7 +7,7 @@ import { API_URL } from '../../config';
 import styles from '../../styles/Event.module.css';
 import moment from 'moment';
 
-const EventPage = ({ evt }) => {
+const EventPage = ({ id, evt }) => {
   evt = evt.attributes;
   const imageFormats = evt.image?.data?.attributes?.formats;
 
@@ -18,7 +18,7 @@ const EventPage = ({ evt }) => {
     <Layout title='event'>
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${evt.id}`} className={styles.edit}>
+          <Link href={`/events/edit/${id}`} className={styles.edit}>
             <FaPencilAlt /> Edit
           </Link>
           <a href='#' className={styles.delete} onClick={handleDelete}>
@@ -57,7 +57,6 @@ const EventPage = ({ evt }) => {
 export async function getServerSideProps({ query: { id } }) {
   const res = await fetch(`${API_URL}/api/events/${id}?populate=image`);
   let event = await res.json();
-  console.log({ singleevt: event });
   return {
     props: { evt: event.data },
   };

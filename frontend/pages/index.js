@@ -11,7 +11,7 @@ export default function HomePage({ events }) {
       {events.length === 0 && <h3>No events available at the moment</h3>}
 
       {events.map((evt) => (
-        <EventItem key={evt.id} evt={evt.attributes || evt} />
+        <EventItem key={evt.id} id={evt.id} evt={evt.attributes || evt} />
       ))}
 
       {events.length > 0 && (
