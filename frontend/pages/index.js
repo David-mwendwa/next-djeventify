@@ -3,6 +3,8 @@ import Layout from '../components/Layout';
 import { API_URL } from '../config';
 import Link from 'next/link';
 import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function HomePage({ events }) {
   return (
@@ -19,6 +21,7 @@ export default function HomePage({ events }) {
           View All Events
         </Link>
       )}
+      <ToastContainer />
     </Layout>
   );
 }

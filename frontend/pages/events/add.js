@@ -6,6 +6,7 @@ import { API_URL } from '../../config/index';
 import styles from '../../styles/Form.module.css';
 import useInput from '../../utils/useInput';
 import { BsArrowLeft } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 
 const AddEventPage = () => {
   const { values, handleChange, resetValues } = useInput({
@@ -18,10 +19,23 @@ const AddEventPage = () => {
     description: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submit', values);
+
+    const res = await fetch(`${API_URL}/api/events`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    });
+
+    if (!res.ok) {
+      toast.error('Something went wrong');
+    } else {
+      const evt = await res.json();
+      Router.push(`/events/${evt.id}`);
+    }
   };
+
   return (
     <Layout title='add new event'>
       <Link href='/events'>
@@ -34,6 +48,7 @@ const AddEventPage = () => {
           <div>
             <label htmlFor='name'>Event Name</label>
             <input
+              required
               type='text'
               id='name'
               name='name'
@@ -44,6 +59,7 @@ const AddEventPage = () => {
           <div>
             <label htmlFor='performers'>Performers</label>
             <input
+              required
               type='text'
               name='performers'
               id='performers'
@@ -54,6 +70,7 @@ const AddEventPage = () => {
           <div>
             <label htmlFor='venue'>Venue</label>
             <input
+              required
               type='text'
               name='venue'
               id='venue'
@@ -64,6 +81,7 @@ const AddEventPage = () => {
           <div>
             <label htmlFor='address'>Address</label>
             <input
+              required
               type='text'
               name='address'
               id='address'
@@ -74,6 +92,7 @@ const AddEventPage = () => {
           <div>
             <label htmlFor='date'>Date</label>
             <input
+              required
               type='date'
               name='date'
               id='date'
@@ -84,6 +103,7 @@ const AddEventPage = () => {
           <div>
             <label htmlFor='time'>Time</label>
             <input
+              required
               type='text'
               name='time'
               id='time'
@@ -96,6 +116,7 @@ const AddEventPage = () => {
         <div>
           <label htmlFor='description'>Event Description</label>
           <textarea
+            required
             type='text'
             name='description'
             id='description'
