@@ -12,7 +12,7 @@ export default function SearchPage({ events }) {
 
   return (
     <Layout title='search results'>
-      <Link href='/events' s>
+      <Link href='/events'>
         <BsArrowLeft /> Go Back
       </Link>
       <h1>Search Results for {router.query.term}</h1>
