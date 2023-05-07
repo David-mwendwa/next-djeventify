@@ -6,7 +6,8 @@ import { API_URL } from '../../config/index';
 import styles from '../../styles/Form.module.css';
 import useInput from '../../utils/useInput';
 import { BsArrowLeft } from 'react-icons/bs';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 const AddEventPage = () => {
@@ -25,15 +26,14 @@ const AddEventPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data } = await axios.post(`${API_URL}/api/events`, {
-      data: { ...values },
-    });
-
-    if (data.error) {
-      toast.error(data.error.message);
-    } else {
-      console.log(data);
+    try {
+      const { data } = await axios.post(`${API_URL}/api/events`, {
+        data: { ...values },
+      });
       router.push(`/events/${data.data.id}`);
+      toast.success('Added a new event');
+    } catch (error) {
+      toast.error(error.response.data.error.message);
     }
   };
 
@@ -42,6 +42,7 @@ const AddEventPage = () => {
       <Link href='/events'>
         <BsArrowLeft /> Go Back
       </Link>
+      <ToastContainer />
       <h1>Add Event</h1>
 
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -127,6 +128,7 @@ const AddEventPage = () => {
 
         <input type='submit' value='Add Event' className='btn' />
       </form>
+      <ToastContainer />
     </Layout>
   );
 };

@@ -3,12 +3,12 @@ import Layout from '../components/Layout';
 import { API_URL } from '../config';
 import Link from 'next/link';
 import axios from 'axios';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function HomePage({ events }) {
   return (
     <Layout>
+      <ToastContainer />
       <h1>Upcoming Events</h1>
       {events.length === 0 && <h3>No events available at the moment</h3>}
 
@@ -21,7 +21,6 @@ export default function HomePage({ events }) {
           View All Events
         </Link>
       )}
-      <ToastContainer />
     </Layout>
   );
 }

@@ -6,14 +6,27 @@ import Layout from '../../components/Layout';
 import { API_URL } from '../../config';
 import styles from '../../styles/Event.module.css';
 import moment from 'moment';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const EventPage = ({ id, evt }) => {
-  evt = evt.attributes;
-  const imageFormats = evt.image?.data?.attributes?.formats;
+  const router = useRouter();
+  evt = evt?.attributes;
+  const imageFormats = evt?.image?.data?.attributes?.formats;
 
-  const handleDelete = (e) => {
-    console.log('delete');
+  const handleDelete = async (e) => {
+    if (confirm('Are you sure?')) {
+      try {
+        await axios.delete(`${API_URL}/api/events/${router.query.id}`);
+        router.push('/events');
+      } catch (error) {
+        toast.error(error.response.data.error.message);
+      }
+    }
   };
+
   return (
     <Layout title='event'>
       <div className={styles.event}>
@@ -27,10 +40,11 @@ const EventPage = ({ id, evt }) => {
         </div>
 
         <span>
-          {moment(evt.date).format('DD MMM YYYY')} at {evt.time}
+          {moment(evt?.date).format('DD MMM YYYY')} at {evt?.time}
         </span>
-        <h1>{evt.name}</h1>
-        {evt.image && (
+        <h1>{evt?.name}</h1>
+        <ToastContainer />
+        {evt?.image && (
           <div className={styles.image}>
             <Image
               src={imageFormats?.thumbnail?.url}
@@ -41,11 +55,11 @@ const EventPage = ({ id, evt }) => {
         )}
 
         <h3>Performers: </h3>
-        <p>{evt.performers}</p>
+        <p>{evt?.performers}</p>
         <h3>Description</h3>
-        <p>{evt.description}</p>
-        <h3>Venue: {evt.venue}</h3>
-        <p>{evt.address}</p>
+        <p>{evt?.description}</p>
+        <h3>Venue: {evt?.venue}</h3>
+        <p>{evt?.address}</p>
         <Link href='/events' className={styles.back}>
           <BsArrowLeft /> Go Back
         </Link>
@@ -68,7 +82,7 @@ export async function getServerSideProps({ query: { id } }) {
 //   events = events.data;
 //   console.log('eventsss', events);
 //   const paths = events.map((evt) => ({
-//     params: { id: evt.id },
+//     params: { id: evt?.id },
 //   }));
 //   return {
 //     paths,
