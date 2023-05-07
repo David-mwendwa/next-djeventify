@@ -7,6 +7,7 @@ import styles from '../../styles/Form.module.css';
 import useInput from '../../utils/useInput';
 import { BsArrowLeft } from 'react-icons/bs';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const AddEventPage = () => {
   const { values, handleChange, resetValues } = useInput({
@@ -19,20 +20,20 @@ const AddEventPage = () => {
     description: '',
   });
 
+  const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`${API_URL}/api/events`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values),
+    const { data } = await axios.post(`${API_URL}/api/events`, {
+      data: { ...values },
     });
 
-    if (!res.ok) {
-      toast.error('Something went wrong');
+    if (data.error) {
+      toast.error(data.error.message);
     } else {
-      const evt = await res.json();
-      Router.push(`/events/${evt.id}`);
+      console.log(data);
+      router.push(`/events/${data.data.id}`);
     }
   };
 
