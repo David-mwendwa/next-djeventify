@@ -157,7 +157,7 @@ const EditEventPage = ({ evt }) => {
 };
 
 export async function getServerSideProps({ params: { id } }) {
-  const res = await fetch(`${API_URL}/api/events/${id}`);
+  const res = await fetch(`${API_URL}/api/events/${id}?populate=image`);
 
   const evt = await res.json();
 
