@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import moment from 'moment';
 import Image from 'next/image';
+import Modal from '../../../components/Modal';
 
 const EditEventPage = ({ evt }) => {
   let id = evt.id;
@@ -29,6 +30,8 @@ const EditEventPage = ({ evt }) => {
   const [imagePreview, setImagePreview] = useState(
     evt?.image?.data?.attributes?.formats?.thumbnail?.url || null
   );
+
+  const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
 
@@ -147,10 +150,14 @@ const EditEventPage = ({ evt }) => {
         </div>
       )}
       <div>
-        <button className='btn-secondary'>
+        <button onClick={() => setShowModal(true)} className='btn-secondary'>
           <FaImage /> Set Image
         </button>
       </div>
+
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        IMAGE UPLOAD
+      </Modal>
       <ToastContainer />
     </Layout>
   );
