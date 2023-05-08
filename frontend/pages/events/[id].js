@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-const EventPage = ({ id, evt }) => {
+const EventPage = ({ evt }) => {
   const router = useRouter();
   evt = evt?.attributes;
   const imageFormats = evt?.image?.data?.attributes?.formats;
@@ -31,7 +31,9 @@ const EventPage = ({ id, evt }) => {
     <Layout title='event'>
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${id}`} className={styles.edit}>
+          <Link
+            href={`/events/edit/${evt.id || router.query.id}`}
+            className={styles.edit}>
             <FaPencilAlt /> Edit
           </Link>
           <a href='#' className={styles.delete} onClick={handleDelete}>
