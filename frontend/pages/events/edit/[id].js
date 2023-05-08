@@ -13,6 +13,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Image from 'next/image';
 import Modal from '../../../components/Modal';
+import ImageUpload from '../../../components/ImageUpload';
 
 const EditEventPage = ({ evt }) => {
   let id = evt.id;
@@ -32,6 +33,15 @@ const EditEventPage = ({ evt }) => {
   );
 
   const [showModal, setShowModal] = useState(false);
+
+  const ImageUploaded = async (e) => {
+    console.log('uploaded!');
+    const res = await fetch(`${API_URL}/api/events/${id}`);
+    const data = await res.json();
+    console.log({ data });
+    setImagePreview(data?.image?.data?.attributes?.formats?.thumbnail?.url);
+    setShowModal(false);
+  };
 
   const router = useRouter();
 
@@ -156,7 +166,7 @@ const EditEventPage = ({ evt }) => {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        IMAGE UPLOAD
+        <ImageUpload evtId={id} ImageUploaded={ImageUploaded} />
       </Modal>
       <ToastContainer />
     </Layout>
