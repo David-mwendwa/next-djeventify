@@ -33,7 +33,7 @@ export default function SearchPage({ events }) {
 
 export async function getServerSideProps({ query: { term } }) {
   // TODO: use a query string
-  let query = qs.stringify({});
+  // let query = qs.stringify({});
   const res = await fetch(
     `${API_URL}/api/events?populate=image&filters[name][$contains]=${term}`
   );
